@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Côte à Côte - Le fil des discussions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header data-header></header>
+
+  <section class="hero">
+    <div class="container">
+      <div>
+        <div class="eyebrow">Bienvenue sur Côte à Côte</div>
+        <h1>Ensemble, protégeons<br>la vie marine.</h1>
+        <p>Associations et bénévoles, partageons nos actions pour un océan vivant.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Un réseau engagé pour l'océan.</h3>
+        <p class="sub">Partagez vos savoirs et unissez vos actions.</p>
+        <div class="stats">
+          <div><strong>2,4 k</strong><span>membres</span></div>
+          <div><strong>186</strong><span>discussions</span></div>
+          <div><strong class="online">38</strong><span>en ligne</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container forum">
+    <!-- Colonne gauche -->
+    <aside class="side-nav-col">
+      <nav class="side-nav">
+        <a href="#" class="active" id="all">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+          Toutes les discussions
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>
+          Les plus populaires
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+          Mes favoris
+        </a>
+      </nav>
+
+      <div class="side-title">Explorer les catégories</div>
+      <div class="cat" data-cat="Vie associative"><span class="hash" style="color:#0e6b83">#</span>Vie associative<span class="n">64</span></div>
+      <div class="cat" data-cat="Entraide terrain"><span class="hash" style="color:#2f7a55">#</span>Entraide terrain<span class="n">48</span></div>
+      <div class="cat" data-cat="Actions locales"><span class="hash" style="color:#a8692b">#</span>Actions locales<span class="n">32</span></div>
+      <div class="cat" data-cat="Vie marine"><span class="hash" style="color:#2d5f86">#</span>Vie marine<span class="n">27</span></div>
+      <div class="cat" data-cat="Réseau associatif"><span class="hash" style="color:#b04a5a">#</span>Réseau associatif<span class="n">15</span></div>
+
+      <div class="side-title">Vos mots-clés</div>
+      <div class="tags"><span># littoral</span><span># océan</span><span># bénévolat</span><span># espèces</span></div>
+
+      <div class="charte">
+        <h4>Agir sans perturber le vivant.</h4>
+        <p>Partageons nos pratiques pour un littoral mieux préservé.</p>
+        <a href="#">Lire la charte <span>&rarr;</span></a>
+      </div>
+    </aside>
+
+    <!-- Fil central -->
+    <section>
+      <div class="feed-head">
+        <div>
+          <h2>Le fil des discussions</h2>
+          <p>Croisons nos expériences pour préserver le vivant.</p>
+        </div>
+        <label class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="search" placeholder="Rechercher un sujet, un mot-clé...">
+          <span class="kbd">&#8984; K</span>
+        </label>
+        <button class="btn btn-teal" id="new-post">+ &nbsp;Nouvelle discussion</button>
+      </div>
+
+      <div class="feed-tabs">
+        <button class="active" data-mode="recent">Récents</button>
+        <button data-mode="pop">Populaires</button>
+        <button data-mode="none">Sans réponse <span class="count">8</span></button>
+        <select><option>Toutes les catégories</option></select>
+      </div>
+
+      <div id="threads"></div>
+
+      <div class="pager">
+        <span id="count-info"></span>
+        <div class="pages">
+          <button class="active">1</button><button>2</button><button>3</button><button>...</button><button>&rsaquo;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Colonne événements -->
+    <aside class="events-col">
+      <h2>Événements</h2>
+      <div id="events"></div>
+      <div class="events-foot">
+        Un espace ouvert. Des échanges respectueux.
+        <a href="#">Charte de la communauté &#8599;</a>
+      </div>
+    </aside>
+  </main>
+
+  <footer data-footer></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Côte à Côte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header data-header data-no-map></header>
+
+  <main class="auth">
+    <div class="container">
+      <a href="carte.html" class="btn btn-light">&larr; &nbsp;Retour à la carte</a>
+      <form class="auth-box" id="form-auth">
+        <h1>Connectez vous</h1>
+        <label for="nom">Nom / Adresse mail</label>
+        <input class="inp" id="nom" name="nom" placeholder="Nom / Mail" required>
+        <label for="pwd">Mot de passe</label>
+        <input class="inp" id="pwd" name="password" type="password" placeholder="Mot de passe" required>
+        <div class="err"></div>
+        <button class="btn btn-teal">Se connecter</button>
+        <a href="inscription.html" class="link">Inscription</a>
+      </form>
+    </div>
+  </main>
+
+  <footer data-footer></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

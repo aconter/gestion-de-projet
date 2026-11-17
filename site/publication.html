@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publication - Côte à Côte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header data-header></header>
+
+  <main class="pub" id="publication">
+    <div class="container">
+      <a href="carte.html" class="btn btn-light">&larr; &nbsp;Retour à la carte</a>
+      <div class="breadcrumbs">La carte &nbsp;/&nbsp; <span data-f="categorie"></span> &nbsp;/&nbsp; Publication</div>
+
+      <div class="pub-grid">
+        <article class="panel pub-main">
+          <div class="eyebrow" data-f="categorieUp"></div>
+          <h1 data-f="titre"></h1>
+          <div class="byline">La communauté Côte a Côte · Événement de démonstration</div>
+          <p class="lead" data-f="intro"></p>
+
+          <h2>Au programme</h2>
+          <div class="block" id="programme"></div>
+
+          <h2>Avant de venir</h2>
+          <div class="block"><p data-f="avant"></p></div>
+
+          <div class="note">
+            <b>Agir sans perturber le vivant.</b>
+            <p>Respectons le site, les habitats et les autres usagers du littoral.<br>Les horaires et le maintien de la sortie sont à confirmer selon la météo.</p>
+          </div>
+        </article>
+
+        <aside>
+          <div class="panel rdv">
+            <h2>Le rendez-vous</h2>
+            <div class="eyebrow">Quand</div>
+            <div class="big" data-f="dateLongue"></div>
+            <div class="small" data-f="heure"></div>
+            <div class="eyebrow">Où</div>
+            <div class="big" data-f="lieu"></div>
+            <div class="small" style="margin-top:14px" data-f="precision"></div>
+            <hr>
+            <h3>Pour participer</h3>
+            <div class="small">Les modalités d'inscription seront précisées par l'association organisatrice.</div>
+          </div>
+          <div class="note side-note">
+            <b>Une idée de rendez-vous local</b>
+            <p>Cette publication est un exemple.<br>Le programme, la date et le lieu sont proposés pour la maquette.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer data-footer></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvelle publication - Côte à Côte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header data-header data-no-map></header>
+
+  <main class="pub">
+    <form class="container" id="form-new">
+      <a href="carte.html" class="btn btn-light">&larr; &nbsp;Retour à la carte</a>
+      <div class="breadcrumbs">La carte &nbsp;/&nbsp; Entraide terrain &nbsp;/&nbsp; Publication</div>
+
+      <input class="inp" style="width:200px;margin-bottom:8px" placeholder="Tags et sujets">
+
+      <div class="pub-grid new-grid">
+        <div class="stack">
+          <input class="inp inp-lg" name="titre" placeholder="Titre du poste" required>
+          <textarea class="inp inp-lg" name="texte" rows="9" placeholder="Description et texte" style="height:230px"></textarea>
+          <button class="btn btn-teal" style="align-self:flex-start">Publier</button>
+          <p id="new-ok" style="display:none;color:var(--teal-text);font-weight:600">Publication envoyée (maquette).</p>
+        </div>
+
+        <aside class="panel rdv">
+          <h2>Le rendez-vous</h2>
+          <div class="eyebrow">Quand</div>
+          <input class="inp" type="text" placeholder="Date" onfocus="this.type='date'">
+          <input class="inp" placeholder="Fourchette horaire">
+          <div class="eyebrow" style="margin-top:4px">Où</div>
+          <input class="inp" placeholder="Lieu">
+          <input class="inp" placeholder="Description">
+          <hr>
+          <h3>Pour participer</h3>
+          <textarea class="inp" placeholder="Modalitées"></textarea>
+        </aside>
+      </div>
+    </form>
+  </main>
+
+  <footer data-footer></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

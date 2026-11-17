@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La carte - Côte à Côte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header data-header></header>
+
+  <section class="hero" style="border-bottom:0">
+    <div class="container">
+      <div>
+        <div class="eyebrow">Le territoire en action</div>
+        <h1>La rade nous rassemble.</h1>
+        <p>Explorez les événements autour de Brest et retrouvez leur publication en un clic.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Un même littoral, mille façons d'agir.</h3>
+        <p class="sub">4 événements à découvrir dans la rade</p>
+        <div class="chips-inline"><span>Brest</span><span>Plougastel</span><span>Crozon</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="map-page">
+      <aside class="map-list">
+        <h2>Autour de la rade</h2>
+        <p>4 rendez-vous pour un océan vivant</p>
+        <p class="hint">Cliquez sur un événement ou un repère.</p>
+        <div id="map-items"></div>
+      </aside>
+
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="map-label"><b>La rade de Brest</b><span>Choisissez un repère pour lire la publication</span></div>
+      </div>
+    </div>
+
+    <div class="map-foot">
+      <div>
+        <b>Chaque repère ouvre la publication de l'événement.</b>
+        <p style="margin-top:8px">Événements de démonstration · dates et lieux proposés pour la maquette.</p>
+      </div>
+      <span>Agir ensemble, tout près de chez nous.</span>
+    </div>
+  </main>
+
+  <footer data-footer></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
