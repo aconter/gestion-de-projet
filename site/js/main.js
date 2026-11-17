@@ -9,7 +9,7 @@ const EVENTS = [
     lieu: "Plage du Moulin Blanc", commune: "Brest", precision: "À l'entrée de la plage du Moulin Blanc.",
     programme: ["10 h · Accueil et présentation des consignes", "10 h 15 · Collecte en petits groupes sur la plage", "11 h 30 · Tri des déchets et bilan collectif"],
     avant: "Prévoyez des chaussures fermées, des gants réutilisables et une gourde. Ne touchez pas aux objets coupants ou suspects : signalez-les à l'équipe.",
-    eyebrow: "Plage des 3 moulins", lat: 48.3946, lng: -4.4305
+    eyebrow: "Plage des 3 moulins", lat: 48.3946, lng: -4.4305, inscrits: 18, places: 30
   },
   {
     id: 2, categorie: "Réseau associatif", titre: "Le café des associations",
@@ -19,7 +19,7 @@ const EVENTS = [
     lieu: "Port du Fret", commune: "Crozon", precision: "Sur le quai du port du Fret.",
     programme: ["10 h 30 · Tour de table des associations", "11 h · Partage des projets et besoins bénévoles", "11 h 45 · Idées d'actions communes"],
     avant: "Venez avec vos idées, vos questions et, si vous le souhaitez, une courte présentation de votre association. La rencontre est ouverte aux bénévoles et aux curieux.",
-    eyebrow: "LE RENDEZ-VOUS", lat: 48.2856, lng: -4.5052
+    eyebrow: "LE RENDEZ-VOUS", lat: 48.2856, lng: -4.5052, inscrits: 9, places: 20
   },
   {
     id: 3, categorie: "Vie marine", titre: "Observer sans déranger",
@@ -29,7 +29,7 @@ const EVENTS = [
     lieu: "Pointe de l'Armorique", commune: "Plougastel", precision: "Au départ du sentier de la pointe de l'Armorique.",
     programme: ["9 h · Accueil et lecture du paysage", "9 h 30 · Observation depuis le sentier côtier", "10 h 30 · Échanges sur les espèces aperçues"],
     avant: "Apportez vos jumelles si vous en avez et des vêtements adaptés à la météo. Restez sur les sentiers, gardez vos distances et ne nourrissez pas les animaux.",
-    eyebrow: "Intervention Océanopolis", lat: 48.3335, lng: -4.4235
+    eyebrow: "Intervention Océanopolis", lat: 48.3335, lng: -4.4235, inscrits: 11, places: 12
   },
   {
     id: 4, categorie: "Entraide terrain", titre: "À la découverte des algues",
@@ -39,7 +39,7 @@ const EVENTS = [
     lieu: "Port du Tinduff", commune: "Plougastel", precision: "Sur le quai du port du Tinduff.",
     programme: ["14 h · Présentation de l'estran et des consignes", "14 h 30 · Observation et reconnaissance des algues", "15 h 30 · Questions et partage des observations"],
     avant: "Prévoyez des chaussures antidérapantes et des vêtements chauds. Observez sans arracher ni récolter. Le parcours sera adapté aux conditions de marée.",
-    eyebrow: "Conférence Think Tank", lat: 48.3370, lng: -4.3650
+    eyebrow: "Conférence Think Tank", lat: 48.3370, lng: -4.3650, inscrits: 6, places: 15
   }
 ];
 
@@ -112,6 +112,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initNouvelle();
   initAuth();
 });
+
+// ---------- Inscriptions aux événements (stockage local) ----------
+function getInscriptions() { return store.get("cac-inscriptions") || {}; }
+function estInscrit(id) { return Boolean(getInscriptions()[id]); }
+function nbInscrits(e) { return e.inscrits + (estInscrit(e.id) ? 1 : 0); }
+function placesRestantes(e) { return Math.max(0, e.places - nbInscrits(e)); }
+function textePlaces(e) {
+  const r = placesRestantes(e);
+  return r === 0 ? "Complet" : `${r} place${r > 1 ? "s" : ""} restante${r > 1 ? "s" : ""}`;
+}
 
 // ---------- Forum (accueil) ----------
 function initForum() {
@@ -265,7 +275,8 @@ function initCarte() {
         <h3>${e.titre}</h3>
         <div class="when">${e.dateCourte}</div>
         <div class="where">${e.lieu} · ${e.commune}</div>
-        <a href="publication.html?id=${e.id}">Voir la publication &rarr;</a>
+        <div class="seats${placesRestantes(e) === 0 ? " full" : ""}">${estInscrit(e.id) ? "&#10003; Inscrit · " : ""}${textePlaces(e)}</div>
+        <a href="publication.html?id=${e.id}">${estInscrit(e.id) ? "Voir la publication" : "Voir et s'inscrire"} &rarr;</a>
       </div>
     </div>`).join("");
 
@@ -288,7 +299,7 @@ function initCarte() {
   EVENTS.forEach(e => {
     const icon = L.divIcon({ className: "", html: `<div class="map-pin" data-pin="${e.id}">${e.id}</div>`, iconSize: [26, 26], iconAnchor: [13, 32], popupAnchor: [0, -30] });
     markers[e.id] = L.marker([e.lat, e.lng], { icon }).addTo(map)
-      .bindPopup(`<b>${e.titre}</b>${e.dateCourte}<br>${e.lieu} · ${e.commune}<br><a href="publication.html?id=${e.id}">Voir la publication &rarr;</a>`)
+      .bindPopup(`<b>${e.titre}</b>${e.dateCourte}<br>${e.lieu} · ${e.commune}<br>${nbInscrits(e)} / ${e.places} participants<br><a href="publication.html?id=${e.id}">${estInscrit(e.id) ? "Voir la publication" : "S'inscrire"} &rarr;</a>`)
       .on("click", () => select(e.id, false));
   });
 
@@ -332,6 +343,51 @@ function initPublication() {
   set("precision", e.precision);
   set("avant", e.avant);
   document.getElementById("programme").innerHTML = e.programme.map(p => `<p>${p}</p>`).join("");
+  initInscription(e);
+}
+
+function initInscription(e) {
+  const form = document.getElementById("form-inscription");
+  const done = document.getElementById("inscrit");
+  const btn = document.getElementById("ins-btn");
+
+  // Pré-remplit avec le compte connecté
+  const user = store.get("cac-user");
+  if (user) form.nom.value = user.nom;
+
+  function render() {
+    const n = nbInscrits(e);
+    document.getElementById("places-fill").style.width = `${Math.min(100, (n / e.places) * 100)}%`;
+    document.getElementById("places-text").textContent = `${n} / ${e.places} participants · ${textePlaces(e)}`;
+    const ins = getInscriptions()[e.id];
+    form.hidden = Boolean(ins);
+    done.hidden = !ins;
+    if (ins) {
+      document.getElementById("inscrit-text").textContent =
+        `Un mail de confirmation a été envoyé à ${ins.mail}. Rendez-vous le ${e.dateLongue.toLowerCase()}, ${e.heure}, ${e.lieu}.`;
+    }
+    const full = placesRestantes(e) === 0;
+    btn.disabled = full;
+    btn.textContent = full ? "Complet" : "Je m'inscris";
+  }
+
+  form.addEventListener("submit", ev => {
+    ev.preventDefault();
+    if (placesRestantes(e) === 0) return;
+    const all = getInscriptions();
+    all[e.id] = { nom: form.nom.value.trim(), mail: form.mail.value.trim(), rappel: form.rappel.checked };
+    store.set("cac-inscriptions", all);
+    render();
+  });
+
+  document.getElementById("desinscription").addEventListener("click", () => {
+    const all = getInscriptions();
+    delete all[e.id];
+    store.set("cac-inscriptions", all);
+    render();
+  });
+
+  render();
 }
 
 // ---------- Nouvelle publication ----------

@@ -263,3 +263,20 @@ textarea.inp { resize: vertical; }
 .modal-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 24px; color: var(--texte-2); }
 button.cat { width: 100%; border: 0; background: none; text-align: left; color: var(--texte); }
 button.cat.active { background: var(--bleu-clair); color: var(--teal-text); }
+
+/* ---------- Inscription aux événements ---------- */
+.places { margin-bottom: 14px; }
+.places-bar { height: 6px; background: var(--bleu-clair); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+#places-fill { height: 100%; background: var(--teal); border-radius: 999px; transition: width .3s; }
+.places .small { margin-bottom: 0; }
+.inscription label { display: block; font-size: 8px; font-weight: 600; color: var(--teal-text); margin: 8px 0 4px; }
+.inscription .inp { height: 28px; }
+.inscription label.check { display: flex; align-items: center; gap: 6px; color: var(--texte-2); font-weight: 400; font-size: 9px; margin: 10px 0 12px; }
+.inscription .btn, .inscrit .btn { width: 100%; height: 32px; font-size: 11px; }
+.btn:disabled { background: #c7cdd2; cursor: not-allowed; }
+.inscrit { background: #e6f4ec; border-radius: 8px; padding: 12px; }
+.inscrit[hidden], .inscription[hidden] { display: none; }
+.inscrit b { color: #2f7a55; font-size: 12px; display: block; margin-bottom: 4px; }
+.inscrit .small { margin-bottom: 10px; }
+.seats { font-size: 9px; font-weight: 600; color: var(--teal-text); margin-bottom: 4px; }
+.seats.full { color: #b04a5a; }
