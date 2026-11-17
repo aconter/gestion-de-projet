@@ -91,10 +91,12 @@ function renderFooter() {
   const el = document.querySelector("[data-footer]");
   if (!el) return;
   el.className = "footer";
+  const page = (location.pathname.split("/").pop() || "index.html").replace(".html", "") || "index";
+  const hasGuide = typeof GUIDES !== "undefined" && Boolean(GUIDES[page]);
   el.innerHTML = `
     <div class="container">
       <span class="brand">Côte a Côte</span>
-      <nav><a href="#">À propos</a><a href="#">Règles du forum</a><a href="#">Confidentialité</a></nav>
+      <nav><a href="#">À propos</a><a href="#">Règles du forum</a><a href="#">Confidentialité</a>${hasGuide ? `<button class="guide-restart" data-guide-restart>Revoir le guide</button>` : ""}</nav>
       <small>© 2026 Côte à Côte</small>
     </div>`;
 }
