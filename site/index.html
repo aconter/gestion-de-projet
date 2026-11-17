@@ -34,34 +34,34 @@
     <!-- Colonne gauche -->
     <aside class="side-nav-col">
       <nav class="side-nav">
-        <a href="#" class="active" id="all">
+        <a href="#" class="active" data-view="all">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
           Toutes les discussions
         </a>
-        <a href="#">
+        <a href="#" data-view="pop">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg>
           Les plus populaires
         </a>
-        <a href="#">
+        <a href="#" data-view="fav">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
-          Mes favoris
+          Mes favoris <span class="n" id="fav-count"></span>
         </a>
       </nav>
 
       <div class="side-title">Explorer les catégories</div>
-      <div class="cat" data-cat="Vie associative"><span class="hash" style="color:#0e6b83">#</span>Vie associative<span class="n">64</span></div>
-      <div class="cat" data-cat="Entraide terrain"><span class="hash" style="color:#2f7a55">#</span>Entraide terrain<span class="n">48</span></div>
-      <div class="cat" data-cat="Actions locales"><span class="hash" style="color:#a8692b">#</span>Actions locales<span class="n">32</span></div>
-      <div class="cat" data-cat="Vie marine"><span class="hash" style="color:#2d5f86">#</span>Vie marine<span class="n">27</span></div>
-      <div class="cat" data-cat="Réseau associatif"><span class="hash" style="color:#b04a5a">#</span>Réseau associatif<span class="n">15</span></div>
+      <button class="cat" data-cat="Vie associative"><span class="hash" style="color:#0e6b83">#</span>Vie associative<span class="n">64</span></button>
+      <button class="cat" data-cat="Entraide terrain"><span class="hash" style="color:#2f7a55">#</span>Entraide terrain<span class="n">48</span></button>
+      <button class="cat" data-cat="Actions locales"><span class="hash" style="color:#a8692b">#</span>Actions locales<span class="n">32</span></button>
+      <button class="cat" data-cat="Vie marine"><span class="hash" style="color:#2d5f86">#</span>Vie marine<span class="n">27</span></button>
+      <button class="cat" data-cat="Réseau associatif"><span class="hash" style="color:#b04a5a">#</span>Réseau associatif<span class="n">15</span></button>
 
       <div class="side-title">Vos mots-clés</div>
-      <div class="tags"><span># littoral</span><span># océan</span><span># bénévolat</span><span># espèces</span></div>
+      <div class="tags"><button data-mot="littoral"># littoral</button><button data-mot="océan"># océan</button><button data-mot="bénévolat"># bénévolat</button><button data-mot="espèces"># espèces</button></div>
 
       <div class="charte">
         <h4>Agir sans perturber le vivant.</h4>
         <p>Partageons nos pratiques pour un littoral mieux préservé.</p>
-        <a href="#">Lire la charte <span>&rarr;</span></a>
+        <a href="#" data-charte>Lire la charte <span>&rarr;</span></a>
       </div>
     </aside>
 
@@ -83,8 +83,12 @@
       <div class="feed-tabs">
         <button class="active" data-mode="recent">Récents</button>
         <button data-mode="pop">Populaires</button>
-        <button data-mode="none">Sans réponse <span class="count">8</span></button>
-        <select><option>Toutes les catégories</option></select>
+        <button data-mode="none">Sans réponse <span class="count" id="none-count"></span></button>
+        <select id="cat-select" aria-label="Filtrer par catégorie">
+          <option value="">Toutes les catégories</option>
+          <option>Vie associative</option><option>Entraide terrain</option><option>Actions locales</option>
+          <option>Vie marine</option><option>Réseau associatif</option>
+        </select>
       </div>
 
       <div id="threads"></div>
@@ -103,10 +107,26 @@
       <div id="events"></div>
       <div class="events-foot">
         Un espace ouvert. Des échanges respectueux.
-        <a href="#">Charte de la communauté &#8599;</a>
+        <a href="#" data-charte>Charte de la communauté &#8599;</a>
       </div>
     </aside>
   </main>
+
+  <!-- Charte de la communauté -->
+  <div class="modal" id="charte-modal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="charte-title">
+      <button class="modal-close" aria-label="Fermer">&times;</button>
+      <div class="eyebrow">Charte de la communauté</div>
+      <h2 id="charte-title">Agir sans perturber le vivant.</h2>
+      <ol>
+        <li><b>Respecter le vivant.</b> On observe à distance, on ne dérange ni ne nourrit la faune, on reste sur les sentiers.</li>
+        <li><b>Ne rien laisser derrière soi.</b> Les déchets collectés sont triés et évacués à la fin de chaque action.</li>
+        <li><b>Assurer la sécurité.</b> On ne touche pas aux objets coupants ou suspects : on les signale à l'équipe.</li>
+        <li><b>Échanger avec respect.</b> Pas d'attaque personnelle, pas de publicité, des messages utiles à la communauté.</li>
+        <li><b>Protéger les données.</b> On ne publie pas d'informations personnelles sur d'autres membres.</li>
+      </ol>
+    </div>
+  </div>
 
   <footer data-footer></footer>
   <script src="js/main.js"></script>

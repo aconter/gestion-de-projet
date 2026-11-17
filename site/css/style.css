@@ -241,3 +241,25 @@ textarea.inp { resize: vertical; }
   .footer .container { flex-wrap: wrap; height: auto; padding: 16px 0; gap: 12px; }
   .footer nav { margin-left: 0; }
 }
+
+/* ---------- Menus cliquables, favoris, charte ---------- */
+.side-nav .n { margin-left: auto; color: var(--texte-3); font-size: 12px; font-weight: 400; }
+.cat.active { background: var(--bleu-clair); color: var(--teal-text); font-weight: 600; }
+.cat.active .n { color: var(--teal-text); }
+.tags button { border: 1px solid var(--bord); background: var(--blanc); border-radius: 4px; padding: 5px 8px; font-size: 11px; color: var(--texte-2); text-align: left; }
+.tags button:hover { border-color: var(--teal); color: var(--teal-text); }
+.tags button.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+.feed-tabs select { cursor: pointer; }
+.fav { background: none; border: 0; font-size: 18px; line-height: 1; color: #b9bec5; padding: 0 4px; align-self: flex-start; }
+.fav:hover { color: var(--teal); }
+.fav.on { color: #e3a008; }
+.empty { background: var(--blanc); padding: 40px 20px; text-align: center; color: var(--texte-2); font-size: 13px; border-bottom: 1px solid var(--bord); }
+.modal { position: fixed; inset: 0; background: rgba(15, 30, 40, .45); display: grid; place-items: center; z-index: 2000; padding: 16px; }
+.modal[hidden] { display: none; }
+.modal-box { position: relative; background: var(--blanc); border-radius: 12px; padding: 28px 30px; max-width: 520px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,.2); }
+.modal-box h2 { font-size: 20px; font-weight: 600; margin: 6px 0 16px; }
+.modal-box ol { padding-left: 18px; display: grid; gap: 10px; font-size: 13px; color: var(--texte-2); }
+.modal-box b { color: var(--texte); }
+.modal-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 24px; color: var(--texte-2); }
+button.cat { width: 100%; border: 0; background: none; text-align: left; color: var(--texte); }
+button.cat.active { background: var(--bleu-clair); color: var(--teal-text); }

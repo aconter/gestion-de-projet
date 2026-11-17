@@ -43,13 +43,17 @@ const EVENTS = [
   }
 ];
 
+// mots : mots-clés de la colonne de gauche (# littoral, # océan, # bénévolat, # espèces)
 const THREADS = [
-  { titre: "Présentez votre association et ses actions pour l'océan", extrait: "", tag: "Réseau associatif", cls: "rose", auteur: "L'équipe <b>Côte a Côte</b>", quand: "il y a 8 h", rep: 42, vues: "1,2 k", pinned: true },
-  { titre: "Comment suivre les espèces marines sur le littoral ?", extrait: "Échangeons nos protocoles pour observer la faune sans la déranger.", tag: "Vie marine", cls: "bleu", auteur: "Camille", quand: "il y a 12 min", rep: 28, vues: 346 },
-  { titre: "Nettoyages du littoral : partageons nos initiatives", extrait: "Présentez vos collectes, vos besoins en bénévoles et vos retours de terrain.", tag: "Actions locales", cls: "beige", auteur: "Thomas", quand: "il y a 35 min", rep: 19, vues: 218 },
-  { titre: "Comment mobiliser des bénévoles pour nos actions ?", extrait: "Partageons nos conseils pour accueillir et fidéliser les équipes de terrain.", tag: "Entraide terrain", cls: "vert", auteur: "Sarah", quand: "il y a 1 h", rep: 12, vues: 164 },
-  { titre: "Herbiers de posidonie : quelles actions de protection ?", extrait: "Discutons du suivi et de la préservation de ces habitats essentiels.", tag: "Vie marine", cls: "bleu", auteur: "Mehdi", quand: "il y a 2 h", rep: 36, vues: 502 },
-  { titre: "Et si nos associations unissaient leurs forces ?", extrait: "Mutualisons le matériel, les savoirs et les actions de sensibilisation.", tag: "Réseau associatif", cls: "rose", auteur: "Léa", quand: "il y a 3 h", rep: 8, vues: 97 }
+  { id: 1, titre: "Présentez votre association et ses actions pour l'océan", extrait: "", tag: "Réseau associatif", cls: "rose", auteur: "L'équipe <b>Côte a Côte</b>", quand: "il y a 8 h", rep: 42, vues: 1200, pinned: true, mots: ["océan"] },
+  { id: 2, titre: "Comment suivre les espèces marines sur le littoral ?", extrait: "Échangeons nos protocoles pour observer la faune sans la déranger.", tag: "Vie marine", cls: "bleu", auteur: "Camille", quand: "il y a 12 min", rep: 28, vues: 346, mots: ["espèces", "littoral"] },
+  { id: 3, titre: "Nettoyages du littoral : partageons nos initiatives", extrait: "Présentez vos collectes, vos besoins en bénévoles et vos retours de terrain.", tag: "Actions locales", cls: "beige", auteur: "Thomas", quand: "il y a 35 min", rep: 19, vues: 218, mots: ["littoral", "bénévolat"] },
+  { id: 4, titre: "Comment mobiliser des bénévoles pour nos actions ?", extrait: "Partageons nos conseils pour accueillir et fidéliser les équipes de terrain.", tag: "Entraide terrain", cls: "vert", auteur: "Sarah", quand: "il y a 1 h", rep: 12, vues: 164, mots: ["bénévolat"] },
+  { id: 5, titre: "Herbiers de posidonie : quelles actions de protection ?", extrait: "Discutons du suivi et de la préservation de ces habitats essentiels.", tag: "Vie marine", cls: "bleu", auteur: "Mehdi", quand: "il y a 2 h", rep: 36, vues: 502, mots: ["espèces", "océan"] },
+  { id: 6, titre: "Et si nos associations unissaient leurs forces ?", extrait: "Mutualisons le matériel, les savoirs et les actions de sensibilisation.", tag: "Réseau associatif", cls: "rose", auteur: "Léa", quand: "il y a 3 h", rep: 8, vues: 97, mots: ["bénévolat"] },
+  { id: 7, titre: "Assemblée générale : comment la rendre plus vivante ?", extrait: "Vos idées pour faire participer les adhérents et les nouveaux bénévoles.", tag: "Vie associative", cls: "bleu", auteur: "Julien", quand: "il y a 4 h", rep: 0, vues: 41, mots: ["bénévolat"] },
+  { id: 8, titre: "Prêt de matériel de collecte entre associations", extrait: "Gants, pinces, sacs : qui peut prêter du matériel pour une collecte en décembre ?", tag: "Entraide terrain", cls: "vert", auteur: "Nora", quand: "il y a 5 h", rep: 0, vues: 23, mots: ["littoral"] },
+  { id: 9, titre: "Recruter un trésorier bénévole", extrait: "Comment avez-vous trouvé les bonnes personnes pour les postes du bureau ?", tag: "Vie associative", cls: "bleu", auteur: "Hugo", quand: "il y a 6 h", rep: 5, vues: 88, mots: ["bénévolat"] }
 ];
 
 // ---------- Session de démo (stockage local, facultatif) ----------
@@ -114,8 +118,33 @@ function initForum() {
   const list = document.getElementById("threads");
   if (!list) return;
 
-  function draw(items) {
-    list.innerHTML = items.map(t => `
+  // Filtres combinables : vue (menu), catégorie, mot-clé, recherche, onglet
+  const state = { view: "all", cat: null, mot: null, q: "", tab: "recent" };
+  const favs = new Set(store.get("cac-favs") || []);
+  const fmtVues = v => v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + " k" : v;
+
+  function filtered() {
+    let items = THREADS.filter(t =>
+      (state.view !== "fav" || favs.has(t.id)) &&
+      (!state.cat || t.tag === state.cat) &&
+      (!state.mot || t.mots.includes(state.mot)) &&
+      (!state.q || (t.titre + " " + t.extrait + " " + t.tag + " " + t.mots.join(" ")).toLowerCase().includes(state.q)) &&
+      (state.tab !== "none" || t.rep === 0)
+    );
+    if (state.view === "pop" || state.tab === "pop") items = [...items].sort((a, b) => b.vues - a.vues);
+    else items = [...items].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+    return items;
+  }
+
+  function emptyMessage() {
+    if (state.view === "fav") return "Aucun favori pour le moment. Cliquez sur l'étoile d'une discussion pour l'ajouter.";
+    if (state.tab === "none") return "Toutes les discussions de cette sélection ont reçu une réponse.";
+    return "Aucune discussion ne correspond à cette sélection.";
+  }
+
+  function draw() {
+    const items = filtered();
+    list.innerHTML = items.length ? items.map(t => `
       <article class="thread${t.pinned ? " pinned" : ""}">
         <div class="main">
           ${t.pinned ? `<div class="pin">&#128204; ÉPINGLÉ</div>` : ""}
@@ -123,38 +152,90 @@ function initForum() {
           ${t.extrait ? `<p class="excerpt">${t.extrait}</p>` : `<div style="height:10px"></div>`}
           <div class="meta"><span class="tag tag-${t.cls}">${t.tag}</span><span>${t.auteur}</span><span>${t.quand}</span></div>
         </div>
-        <div class="replies">&#128172;<strong>${t.rep}</strong><br>réponses<br>${t.vues} vues</div>
-      </article>`).join("");
-    document.getElementById("count-info").textContent = `Affichage de ${items.length} discussions sur 186`;
-  }
-  draw(THREADS);
+        <button class="fav${favs.has(t.id) ? " on" : ""}" data-fav="${t.id}" title="${favs.has(t.id) ? "Retirer des favoris" : "Ajouter aux favoris"}" aria-pressed="${favs.has(t.id)}">${favs.has(t.id) ? "&#9733;" : "&#9734;"}</button>
+        <div class="replies">&#128172;<strong>${t.rep}</strong><br>réponses<br>${fmtVues(t.vues)} vues</div>
+      </article>`).join("")
+      : `<div class="empty">${emptyMessage()}</div>`;
 
-  // Recherche
-  const search = document.getElementById("search");
-  search.addEventListener("input", () => {
-    const q = search.value.toLowerCase().trim();
-    draw(THREADS.filter(t => (t.titre + t.extrait + t.tag).toLowerCase().includes(q)));
+    document.getElementById("count-info").textContent =
+      `Affichage de ${items.length} discussion${items.length > 1 ? "s" : ""} sur 186`;
+    document.getElementById("none-count").textContent = THREADS.filter(t => t.rep === 0).length;
+    document.getElementById("fav-count").textContent = favs.size || "";
+    syncActive();
+  }
+
+  // Met en surbrillance ce qui est sélectionné dans les menus
+  function syncActive() {
+    document.querySelectorAll(".side-nav a").forEach(a =>
+      a.classList.toggle("active", a.dataset.view === state.view && !state.cat && !state.mot));
+    document.querySelectorAll(".cat").forEach(c => c.classList.toggle("active", c.dataset.cat === state.cat));
+    document.querySelectorAll(".tags button").forEach(b => b.classList.toggle("active", b.dataset.mot === state.mot));
+    document.querySelectorAll(".feed-tabs button").forEach(b => b.classList.toggle("active", b.dataset.mode === state.tab));
+    document.getElementById("cat-select").value = state.cat || "";
+  }
+
+  // Menu principal
+  document.querySelectorAll(".side-nav a").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault();
+    state.view = a.dataset.view;
+    state.cat = null; state.mot = null;
+    state.tab = a.dataset.view === "pop" ? "pop" : "recent";
+    draw();
+  }));
+
+  // Catégories (un 2e clic retire le filtre)
+  document.querySelectorAll(".cat").forEach(c => c.addEventListener("click", () => {
+    state.cat = state.cat === c.dataset.cat ? null : c.dataset.cat;
+    if (state.view === "fav") state.view = "all";
+    draw();
+  }));
+  document.getElementById("cat-select").addEventListener("change", e => {
+    state.cat = e.target.value || null;
+    if (state.view === "fav") state.view = "all";
+    draw();
   });
-  document.addEventListener("keydown", e => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); search.focus(); }
-  });
+
+  // Mots-clés (un 2e clic retire le filtre)
+  document.querySelectorAll(".tags button").forEach(b => b.addEventListener("click", () => {
+    state.mot = state.mot === b.dataset.mot ? null : b.dataset.mot;
+    if (state.view === "fav") state.view = "all";
+    draw();
+  }));
 
   // Onglets
   document.querySelectorAll(".feed-tabs button").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".feed-tabs button").forEach(x => x.classList.remove("active"));
-    b.classList.add("active");
-    const mode = b.dataset.mode;
-    let items = [...THREADS];
-    if (mode === "pop") items.sort((a, b) => b.rep - a.rep);
-    if (mode === "none") items = [];
-    draw(items);
+    state.tab = b.dataset.mode;
+    if (state.view === "pop" && state.tab !== "pop") state.view = "all";
+    draw();
   }));
 
-  // Catégories
-  document.querySelectorAll(".cat").forEach(c => c.addEventListener("click", () => {
-    draw(THREADS.filter(t => t.tag === c.dataset.cat));
+  // Favoris
+  list.addEventListener("click", e => {
+    const b = e.target.closest("[data-fav]");
+    if (!b) return;
+    const id = Number(b.dataset.fav);
+    favs.has(id) ? favs.delete(id) : favs.add(id);
+    store.set("cac-favs", [...favs]);
+    draw();
+  });
+
+  // Recherche
+  const search = document.getElementById("search");
+  search.addEventListener("input", () => { state.q = search.value.toLowerCase().trim(); draw(); });
+  document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); search.focus(); }
+    if (e.key === "Escape") closeCharte();
+  });
+
+  // Charte (fenêtre modale)
+  const modal = document.getElementById("charte-modal");
+  function closeCharte() { modal.hidden = true; }
+  document.querySelectorAll("[data-charte]").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); modal.hidden = false;
   }));
-  document.getElementById("all").addEventListener("click", e => { e.preventDefault(); draw(THREADS); });
+  modal.addEventListener("click", e => { if (e.target === modal || e.target.closest(".modal-close")) closeCharte(); });
+
+  draw();
 
   // Événements colonne droite
   document.getElementById("events").innerHTML = EVENTS.map(e => `
