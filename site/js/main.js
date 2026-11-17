@@ -158,7 +158,7 @@ function initForum() {
 
   // Événements colonne droite
   document.getElementById("events").innerHTML = EVENTS.map(e => `
-    <a class="ev-card" href="publication.html?id=${e.id}">
+    <a class="ev-card" href="carte.html?id=${e.id}">
       <div class="eyebrow ${e.eyebrow === e.eyebrow.toUpperCase() ? "up" : ""}">${e.eyebrow}</div>
       <h3>${e.titre}</h3>
       <p>${e.resume}</p>
@@ -221,7 +221,15 @@ function initCarte() {
     const item = ev.target.closest(".map-item");
     if (item) select(Number(item.dataset.id), true);
   });
-  select(1, false);
+  // Événement demandé dans l'URL (ex. carte.html?id=3) : centré et ouvert
+  const wanted = Number(new URLSearchParams(location.search).get("id"));
+  if (EVENTS.some(e => e.id === wanted)) {
+    map.setView([EVENTS.find(e => e.id === wanted).lat, EVENTS.find(e => e.id === wanted).lng], 13);
+    select(wanted, true);
+    list.querySelector(`.map-item[data-id="${wanted}"]`).scrollIntoView({ block: "nearest" });
+  } else {
+    select(1, false);
+  }
 }
 
 // ---------- Page publication ----------
